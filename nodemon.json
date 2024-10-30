@@ -1,0 +1,14 @@
+{
+    "watch": [
+        "src",
+        ".env"
+    ],
+    "ext": "js,json",
+    "ignore": [
+        "node_modules",
+        "data",
+        "log",
+        "dist"
+    ],
+    "exec": "node --inspect ./src/index.js"
+}

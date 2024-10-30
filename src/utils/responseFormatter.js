@@ -1,5 +1,5 @@
-const { ERROR_TYPE } = require('./constants/constant');
-const Responder = require('./responder')
+import { ERROR_TYPE } from "./constants/constant";
+import Responder from "./responder";
 
 const ResponseFormatter = () => { }
 
@@ -19,11 +19,6 @@ ResponseFormatter.operationFailed = (res, error, type, path) => {
             [type]: path,
         }
     }
-    logger.error({
-        message: error?.message,
-        source: error?.source,
-        status: error?.code ?? 500
-    })
     const failedResponse = {
         statusCode: error?.code,
         error: error?.message,
@@ -33,7 +28,7 @@ ResponseFormatter.operationFailed = (res, error, type, path) => {
     return Responder.operationFailed(failedResponse, res);
 }
 
-const catchService = (error, module, path) => {
+export const catchService = (error, module, path) => {
     if (!error.source) {
         error.source = {
             [module]: path
@@ -42,7 +37,4 @@ const catchService = (error, module, path) => {
     throw error;
 }
 
-module.exports = {
-    ResponseFormatter,
-    catchService
-}
+export default ResponseFormatter

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "to test the ai connectors",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon"
@@ -14,8 +15,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
-    "winston": "^3.11.0",
-    "winston-daily-rotate-file": "^4.7.1"
+    "groq-sdk": "^0.7.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.2"

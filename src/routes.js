@@ -1,9 +1,8 @@
-const Responder = require("./utils/responder")
+import Responder from "./utils/responder.js";
 
 const initRoutes = (app) => {
+    // app.post("/ask", )
     app.get("/healthCheck", Responder.healthCheck)
 }
 
-module.exports = {
-    initRoutes
-}
+export default initRoutes;

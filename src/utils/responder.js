@@ -32,4 +32,4 @@ Responder.healthCheck = async (req, res) => {
     return res.send(`healthCheck for ${req.url}`)
 }
 
-module.exports = Responder
+export default Responder

@@ -1,8 +1,7 @@
-const process = require('process')
-const dotenv = require('dotenv')
+import * as dotenv from "dotenv"
 
 dotenv.config()
 
 const env = process.env
 
-module.exports = env
+export default env

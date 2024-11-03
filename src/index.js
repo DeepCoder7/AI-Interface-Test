@@ -2,9 +2,7 @@ import express from "express";
 import cors from "cors";
 import initRoutes from "./routes.js";
 import env from "./conf/env.js";
-import { getGroqChatCompletion, main } from "./AI/groq.js";
-import { GeminiMain } from "./AI/gemini.js";
-
+import { main } from "./AI/groq.js";
 
 const app = express(); // Use express() directly, not new express()
 app.use(
@@ -17,8 +15,7 @@ app.set('server.timeout', 1000 * 60 * 2); // by default setting timeout for serv
 
 initRoutes(app);
 
-// GeminiMain();
-// main()
+main();
 
 app.listen(env.PORT, () => {
     console.log(`Server is running on PORT: ${env.PORT}`);

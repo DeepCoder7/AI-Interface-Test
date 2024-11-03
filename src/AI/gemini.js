@@ -5,15 +5,21 @@ import env from "../conf/env.js";
 const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
 
 // here we have to set system instruction on declaration
-const model = genAI.getGenerativeModel({
+export const shortNewsAgent = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",
-    systemInstruction: "You are a news reporter, you have to give summarized news in very short",
+    systemInstruction: "You are a news reporter, you have to give summarized news in 60 words",
 });
 
-export const GeminiMain = async() =>{
-    const result = await model.generateContent(DEFAULT_NEWS);
-    console.log(result.response.text());
-}
+export const newsAgent = genAI.getGenerativeModel({
+    model: "gemini-1.5-flash",
+    systemInstruction: "You are a news reporter, you have to give detailed news",
+});
+
+// export const GeminiMain = async() =>{
+//     const result = await shortNewsAgent.generateContent(DEFAULT_NEWS);
+//     console.log(result.response.text());
+// }
+
 
 // Note :
 // 1. Gemini Have the access of internet so it can also provide the real-time data under some limitation, dependce on data privacy police

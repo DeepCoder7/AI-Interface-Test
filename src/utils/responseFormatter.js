@@ -1,5 +1,5 @@
-import { ERROR_TYPE } from "./constants/constant";
-import Responder from "./responder";
+import { ERROR_TYPE } from "./constants/constant.js";
+import Responder from "./responder.js";
 
 const ResponseFormatter = () => { }
 
@@ -25,6 +25,7 @@ ResponseFormatter.operationFailed = (res, error, type, path) => {
         type: error?.type || ERROR_TYPE.SERVER_ERROR, // SERVER ERROR BY DEFAULT
         success: false
     }
+    console.log(error)
     return Responder.operationFailed(failedResponse, res);
 }
 

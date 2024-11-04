@@ -1,38 +1,72 @@
 import Groq from "groq-sdk";
 import env from "../conf/env.js";
-import { API_AND_DESCRIPTION, DEMO_COMMAND } from "../utils/constants/constant.js";
+import { API_AND_DESCRIPTION, API_DATA_FIELDS, DEMO_COMMAND } from "../utils/constants/constant.js";
 import fs from "fs/promises";
 
 const groq = new Groq({ apiKey: env.GROQ_API_KEY });
 
-// ${API_AND_DESCRIPTION.reduce((acc, item, index) => {
-//   const separator = index ? "" : ",";
-//   return `${separator}${item.category}: ${item.description}`;
-// }, "")}
-
-export async function groqAgent(prompt) {
-  return groq.chat.completions.create({
+export async function groqCategoryAgent(prompt) {
+  const data = await groq.chat.completions.create({
     messages: [
       {
         role: "system",
-        content: `${JSON.stringify(API_AND_DESCRIPTION)}, based on this data return only one category name strictly`
+        content: `Given a command related to one of the following categories:\n${API_AND_DESCRIPTION.reduce((acc, item, index) => {
+          acc += `${index + 1}. ${item.category} - ${item.description}.\n`;
+          return acc;
+        }, "")}Identify and return only the category name as plain text, that matches the intent of the command.\nFor example - Command: "Buy 10 shares of Tesla."\nExpected Output: "buy-stock"`
       },
       ...prompt
     ],
     model: "llama3-70b-8192"
   })
+  if (!data) {
+    throw new Error("Unable to process")
+  }
+  return data.choices[0]?.message?.content
 }
 
-export async function main(){
+export async function groqExtraction(prompt, systemPrompt) {
+  const data = await groq.chat.completions.create({
+    messages: [
+      {
+        role: "system",
+        content: systemPrompt
+      },
+      ...prompt
+    ],
+    model: "llama3-70b-8192"
+  })
+  if(!data){
+    throw new Error("Unable to process")
+  }
+  return data.choices[0]?.message?.content;
+}
+
+export async function main() {
   const data = await Promise.allSettled(
-    DEMO_COMMAND.map(async(msg) => {
-      const dd = await groqAgent([{
-        role: "user",
-        content: `return the category of command : "${msg}", return only category name and avoid any symobol`
-      }])
-      return {
-        prompt: msg,
-        output: dd.choices[0]?.message?.content || "NO"
+    DEMO_COMMAND.map(async (msg) => {
+      try {
+        const dd = await groqCategoryAgent([{
+          role: "user",
+          content: `command : "${msg}", don't return any extra text`
+        }])
+
+        const output = dd;
+
+        const inputData = API_DATA_FIELDS[output] ? await groqExtraction([
+          {
+            role: "user",
+            content: `return the extracted data from command: "${msg}", return only given feild, stictly extract only given fields data`
+          }
+        ], API_DATA_FIELDS[output]) : ""
+        return {
+          prompt: msg,
+          output,
+          data: inputData
+        }
+      } catch (error) {
+        console.log(msg, error);
+        throw error;
       }
     })
   )

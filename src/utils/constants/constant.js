@@ -23,12 +23,10 @@ export const API_AND_DESCRIPTION = [
     {
         category: "news",
         description: "This will give you the the details or short news",
-        data: "newsOf"
     },
     {
         category: "detailed-news",
         description: "This will give you the the details or detailed news",
-        data: "newsOf"
     },
     {
         category: "portfolio-detail",
@@ -38,16 +36,23 @@ export const API_AND_DESCRIPTION = [
     {
         category: "pricing-stock",
         description: "This will return the pricing of stock",
-        data: "stockName"
     },
     {
         category: "buy-stock",
         description: "This will to buy stock with no of units",
-        data: "stockName,unit"
     },
     {
         category: "sell-stock",
         description: "This will to sell stock with no of units",
-        data: "stockName,unit"
     }
 ];
+
+export const API_DATA_FIELDS = {
+    ["news"]: "Identify and extract the main entity (such as a company, commodity, or organization name) from the following text. The text may vary in format, but it will always include a reference to one primary entity. Return only the extracted name without any additional text or formatting.\nText: \"Give me the detail or update of gold in India\"\nExpected Output: \"gold\"",
+    ["detailed-news"]: "Identify and extract the main entity (such as a company, commodity, or organization name) from the following text. The text may vary in format, but it will always include a reference to one primary entity. Return only the extracted name without any additional text or formatting.\nText: \"Give me the detail or update of gold in India\"\nExpected Output: \"gold\"",
+    ["portfolio-detail"]: null,
+    ["pricing-stock"]: "Extract the name of the stock or company from the following command related to stock pricing. The command may vary in wording, but it will always include a reference to a stock or company name. Return only the name of the stock or company without any additional text or formatting return only plain text.\nCommand: \"What's the latest price of Tesla stock?\"\nExpected Output: \"Tesla\"",
+    ["buy-stock"]: "Extract the stock name and the number of units to buy from the following command. The command may vary in wording, but it will always include a reference to a stock name and the quantity to purchase. Return only the stock name and the number of units, formatted as follows: {\"stockName\": \"<stock name>\", \"units\": <number>}.\nCommand: \"Buy 10 shares of Tesla.\"\nExpected Output: {\"stockName\": \"Tesla\", \"units\": 10}",
+    ["sell-stock"]: "Extract the stock name and the number of units to sell from the following command. The command may vary in wording, but it will always include a reference to a stock name and the quantity to sell. Return only the stock name and the number of units, formatted as follows: {\"stockName\": \"<stock name>\", \"units\": <number>}.\nCommand: \"Sell 10 shares of Tesla.\"\nExpected Output: {\"stockName\": \"Tesla\", \"units\": 10}",
+};
+
